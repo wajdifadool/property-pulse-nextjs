@@ -1,0 +1,10 @@
+@tailwind base;
+@tailwind comoponents;
+@tailwind utilities;
+
+/* override css clasess in here */
+/* Exmaple
+div {
+  color: red;
+} 
+  */
