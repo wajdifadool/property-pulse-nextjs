@@ -1,5 +1,5 @@
 'use client'
-import { useState } from 'react'
+import { useState, useEffect, useRef } from 'react'
 import { usePathname } from 'next/navigation'
 import Link from 'next/link'
 import Image from 'next/image'
@@ -7,15 +7,24 @@ import Image from 'next/image'
 import logo from '@/assets/images/logo-white.png'
 import profileDefault from '@/assets/images/profile.png'
 import { FaGoogle } from 'react-icons/fa'
+
 const NavBar = () => {
   // For the dropdown menu
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false)
   const [isProfileMenuOpen, setIsProfileMenuOpen] = useState(false)
-  const [isLoggedIn, setIsLoggedIn] = useState(false)
+  const [isLoggedIn, setIsLoggedIn] = useState(true)
 
-  /** states inits  */
+  /** Hooks  */
   const pathName = usePathname()
+  const menuRef = useRef(null)
 
+  useEffect(() => {
+    // NOTE: close Mobile Menu if the viewport size changes
+
+    window.addEventListener('resize', () => {
+      setIsMobileMenuOpen(false)
+    })
+  }, [])
   return (
     <>
       <nav className="bg-blue-700 border-b border-blue-500">
@@ -146,7 +155,13 @@ const NavBar = () => {
                       id="user-menu-button"
                       aria-expanded="false"
                       aria-haspopup="true"
-                      onClick={() => setIsProfileMenuOpen((prev) => !prev)}>
+                      onClick={() => setIsProfileMenuOpen((prev) => !prev)}
+                      onBlur={(e) => {
+                        // 👈️ add the onBlur
+                        if (!menuRef.current.contains(e.relatedTarget)) {
+                          setIsProfileMenuOpen(false)
+                        }
+                      }}>
                       <span className="absolute -inset-1.5"></span>
                       <span className="sr-only">Open user menu</span>
                       <Image
@@ -165,7 +180,8 @@ const NavBar = () => {
                       role="menu"
                       aria-orientation="vertical"
                       aria-labelledby="user-menu-button"
-                      tabIndex="-1">
+                      tabIndex="-1"
+                      ref={menuRef}>
                       <Link
                         href="/profile"
                         className="block px-4 py-2 text-sm text-gray-700"
