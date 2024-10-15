@@ -4,7 +4,12 @@
 
 /* override css clasess in here */
 /* Exmaple
-div {
-  color: red;
-} 
-  */
+    div {
+    color: red;
+    } 
+*/
+
+body {
+  background: #373535;
+  color: #fff;
+}
