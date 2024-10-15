@@ -157,7 +157,6 @@ const NavBar = () => {
                       aria-haspopup="true"
                       onClick={() => setIsProfileMenuOpen((prev) => !prev)}
                       onBlur={(e) => {
-                        // 👈️ add the onBlur
                         if (!menuRef.current.contains(e.relatedTarget)) {
                           setIsProfileMenuOpen(false)
                         }
