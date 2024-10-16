@@ -1,7 +1,8 @@
 //main entry point , the Childer are Home Page
 import '@/assets/styles/globals.css'
+// Components
 import NavBar from '@/components/Navbar'
-
+import Footer from '@/components/Footet'
 // export const metadata = {
 //   title: 'Property Pulse',
 //   keyword: 'rental, property, real estate, keywordsgoes here ',
@@ -14,6 +15,7 @@ const MainLayout = ({ children }) => {
       <body>
         <NavBar />
         <main>{children}</main>
+        <Footer />
       </body>
     </html>
   )
