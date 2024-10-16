@@ -35,7 +35,7 @@ const HomeProprties = () => {
       <section className="m-auto max-w-lg my-1 px-6">
         {/* Link to Proprties */}
         <Link
-          href="/proprties"
+          href="/properties"
           className="block bg-black text-white text-center py-4 px-6   rounded-xl hover:bg-gray-700">
           View all properties
         </Link>
