@@ -11,6 +11,15 @@ import {
 } from 'react-icons/fa'
 
 const PropertyCard = ({ item }) => {
+  // instaniate router
+
+  //   const handleDetailsClick = () => {
+  //     router.push({
+  //       pathname: `/properties/${item._id}`,
+  //       query: { ...item },
+  //     })
+  //   }
+
   const getRateDisplay = () => {
     const { rates } = item
     if (rates.monthly) {
@@ -76,6 +85,7 @@ const PropertyCard = ({ item }) => {
             </span>
           </div>
           <Link
+            // onClick={handleDetailsClick}
             href={`/properties/${item._id}`}
             className="h-[36px] bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded-lg text-center text-sm">
             Details

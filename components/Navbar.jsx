@@ -1,18 +1,28 @@
 'use client'
+// HOOKS
 import { useState, useEffect, useRef } from 'react'
 import { usePathname } from 'next/navigation'
 import Link from 'next/link'
 import Image from 'next/image'
 
-import logo from '@/assets/images/logo-white.png'
-import profileDefault from '@/assets/images/profile.png'
+// NPM Packages
 import { FaGoogle } from 'react-icons/fa'
+import { signIn, signOut, getProviders, useSession } from 'next-auth/react'
+
+// My Packages
+import profileDefault from '@/assets/images/profile.png'
+import logo from '@/assets/images/logo-white.png'
 
 const NavBar = () => {
+  // get The Auth session
+  const { data: session } = useSession()
+
   // For the dropdown menu
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false)
   const [isProfileMenuOpen, setIsProfileMenuOpen] = useState(false)
-  const [isLoggedIn, setIsLoggedIn] = useState(true)
+  // const [isLoggedIn, setIsLoggedIn] = useState(false)
+
+  const [providers, setProviders] = useState(null)
 
   /** Hooks  */
   const pathName = usePathname()
@@ -24,6 +34,30 @@ const NavBar = () => {
     window.addEventListener('resize', () => {
       setIsMobileMenuOpen(false)
     })
+
+    // Cleanup the event listener when the component unmounts
+    // This approach is necessary to ensure that the event listener is properly removed when the component unmounts or re-renders.
+    return () => {
+      window.removeEventListener('resize', () => setIsMobileMenuOpen(false))
+    }
+  }, [])
+
+  // TODO:
+  // useEffect(() => {
+  //   if (session === null) {
+  //     setIsLoggedIn(false)
+  //   } else {
+  //     setIsLoggedIn(true)
+  //   }
+  // }, [session])
+
+  useEffect(() => {
+    const setAuthProviders = async () => {
+      const res = await getProviders()
+      setProviders(res)
+    }
+
+    setAuthProviders()
   }, [])
   return (
     <>
@@ -91,7 +125,7 @@ const NavBar = () => {
                     Properties
                   </Link>
 
-                  {isLoggedIn && (
+                  {session && (
                     <Link
                       href="/properties/add"
                       className={`${
@@ -104,21 +138,29 @@ const NavBar = () => {
               </div>
             </div>
 
+            {/*  */}
             {/* <!-- Right Side Menu (Logged Out) --> */}
-            {!isLoggedIn && (
+            {!session && (
               <div className="hidden md:block md:ml-6">
                 <div className="flex items-center">
-                  <button className="flex items-center text-white bg-gray-700 hover:bg-gray-900 hover:text-white rounded-md px-3 py-2">
-                    <FaGoogle className="fa-brands fa-google text-white mr-2" />
-                    <span>Login or Register</span>
-                  </button>
+                  {providers &&
+                    Object.values(providers).map((provider, index) => (
+                      <button
+                        // key={index}
+                        key={provider.id} // google , email , github ...                       onClick={()=>{signIn()}}
+                        onClick={() => signIn(provider.id)}
+                        className="flex items-center text-white bg-gray-700 hover:bg-gray-900 hover:text-white rounded-md px-3 py-2">
+                        <FaGoogle className="fa-brands fa-google text-white mr-2" />
+                        <span>Login or Register</span>
+                      </button>
+                    ))}
                 </div>
               </div>
             )}
 
             {/* <!-- Right Side Menu (Logged In) --> */}
 
-            {isLoggedIn && (
+            {session && (
               <div className="absolute inset-y-0 right-0 flex items-center pr-2 md:static md:inset-auto md:ml-6 md:pr-0">
                 <Link href="/messages" className="relative group">
                   <button
@@ -231,7 +273,7 @@ const NavBar = () => {
                 Properties
               </Link>
 
-              {isLoggedIn && (
+              {session && (
                 <Link
                   href="/properties/add"
                   className={`${
@@ -241,7 +283,7 @@ const NavBar = () => {
                 </Link>
               )}
 
-              {!isLoggedIn && (
+              {!session && (
                 <button className="flex items-center text-white bg-gray-700 hover:bg-gray-900 hover:text-white rounded-md px-3 py-2 my-5">
                   <i className="fa-brands fa-google mr-2"></i>
                   <span>Login or Register</span>

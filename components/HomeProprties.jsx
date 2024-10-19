@@ -1,9 +1,20 @@
 import PropertyCard from '@/components/PropertyCard'
-import proprtiesJSON from '@/properties.json'
 import Link from 'next/link'
+import connectDB from '@/config/database'
 
-const HomeProprties = () => {
-  const recentProperties = proprtiesJSON.slice(0, 3)
+import Property from '@/models/Property'
+
+const HomeProprties = async () => {
+  // connect to DB
+  connectDB()
+
+  // Fetch all properties ,
+  // lean will return plain js object format insted of mongoDB object
+  const recentProperties = await Property.find({})
+    .sort({ createdAt: -1 })
+    .limit(3)
+    .lean()
+
   return (
     <div>
       <section className="px-4 py-6">
@@ -21,6 +32,7 @@ const HomeProprties = () => {
                 // <div>{propertiy.name}</div>
                 // We have to pass key as uniqe id
                 <PropertyCard
+                  pr={JSON.stringify(propertiy)}
                   key={propertiy._id}
                   //
                   item={propertiy}

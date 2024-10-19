@@ -9,7 +9,7 @@ const connectDB = async () => {
 
   // if the database already conecetd dont connect again
   if (connected) {
-    console.log(colors.green('MongoDB is connected, yeaaah').bgYellow.bold)
+    console.log(colors.green('MongoDB is connected').bgYellow.bold)
     return
   }
 
@@ -17,7 +17,7 @@ const connectDB = async () => {
   try {
     await mongoose.connect(process.env.MONGODB_URI)
     connected = true
-    console.log('MongoDB is connected')
+    console.log(colors.green('MongoDB New Connection started ! '))
   } catch (error) {
     console.log(colors.red(error).bgWhite)
   }
