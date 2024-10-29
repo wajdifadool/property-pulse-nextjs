@@ -16,6 +16,7 @@ import logo from '@/assets/images/logo-white.png'
 const NavBar = () => {
   // get The Auth session
   const { data: session } = useSession()
+  const profileImage = session?.user?.image
 
   // For the dropdown menu
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false)
@@ -207,7 +208,9 @@ const NavBar = () => {
                       <span className="sr-only">Open user menu</span>
                       <Image
                         className="h-8 w-8 rounded-full"
-                        src={profileDefault}
+                        src={profileImage || profileDefault}
+                        width={40}
+                        height={40}
                         alt=""
                       />
                     </button>

@@ -13,16 +13,14 @@ import AuthProvider from '@/components/AuthProvider'
 const MainLayout = ({ children }) => {
   return (
     <AuthProvider>
-      
-    <html>
-      <body>
-        <NavBar />
-        <main>{children}</main>
-        <Footer />
-      </body>
-    </html>
+      <html>
+        <body>
+          <NavBar />
+          <main>{children}</main>
+          <Footer />
+        </body>
+      </html>
     </AuthProvider>
-
   )
 }
 
