@@ -14,7 +14,7 @@ import connectDB from '@/config/database'
 import { FaArrowLeft } from 'react-icons/fa'
 import PropertyDetails from '@/components/PropertyDetails'
 import PropertyHeadImage from '@/components/PropertyHeaderImage'
-
+import PropertyImages from '@/components/PropertyImages'
 const PropertPage = async ({ params, searchParams }) => {
   // C
   await connectDB()
@@ -49,6 +49,8 @@ const PropertPage = async ({ params, searchParams }) => {
           </div>
         </section>
       </section>
+
+      <PropertyImages images={property.images} />
     </div>
   )
 }

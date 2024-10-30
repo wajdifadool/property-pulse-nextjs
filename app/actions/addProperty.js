@@ -1,18 +1,20 @@
 'use server'
 
-import { revalidatePath } from 'next/cache'
-import { redirect } from 'next/navigation'
-
 import connectDB from '@/config/database'
 import Property from '@/models/Property'
 import { getSessionUser } from '@/utils/getSessionUser'
+import { revalidatePath } from 'next/cache'
+import { redirect } from 'next/navigation'
+import cloudinary from '@/config/cloudinary'
 
-/**
- * This is server side function
- * itc called servers Actions
- * https://nextjs.org/docs/app/building-your-application/data-fetching/server-actions-and-mutations
- */
+// /**
+//  * This is server side function
+//  * itc called servers Actions
+//  * https://nextjs.org/docs/app/building-your-application/data-fetching/server-actions-and-mutations
+//  */
 async function addProperty(formData) {
+  await connectDB()
+
   const userSession = await getSessionUser()
 
   if (!userSession || !userSession.id) {
@@ -22,15 +24,12 @@ async function addProperty(formData) {
 
   const { id } = userSession
 
+  // Access all values for amenities and images
   const amenities = formData.getAll('amenities')
+  const images = formData.getAll('images').filter((image) => image.name !== '')
 
-  const images = formData
-    .getAll('images')
-    .filter((image) => image.name != '')
-    .map((image) => image.name)
-
+  // Create the propertyData object with embedded seller_info
   const propertyData = {
-    owner: id,
     type: formData.get('type'),
     name: formData.get('name'),
     description: formData.get('description'),
@@ -54,22 +53,39 @@ async function addProperty(formData) {
       email: formData.get('seller_info.email'),
       phone: formData.get('seller_info.phone'),
     },
-    images,
+    owner: id,
   }
 
-  // console.log(propertyData)
+  const imageUrls = []
 
-  // create the Object Schema
+  for (const imageFile of images) {
+    const imageBuffer = await imageFile.arrayBuffer()
+    const imageArray = Array.from(new Uint8Array(imageBuffer))
+    const imageData = Buffer.from(imageArray)
+
+    // Convert the image data to base64
+    const imageBase64 = imageData.toString('base64')
+
+    // Make request to upload to Cloudinary
+    const result = await cloudinary.uploader.upload(
+      `data:image/png;base64,${imageBase64}`,
+      {
+        folder: 'propertypulse',
+      }
+    )
+
+    imageUrls.push(result.secure_url)
+  }
+
+  propertyData.images = imageUrls
+
   const newProperty = new Property(propertyData)
-  await newProperty.save() // in the databse
+  await newProperty.save()
 
-  // revladite path, meaning cleaering the back history stack
   revalidatePath('/', 'layout')
 
-  // redirect to the new property ppage
   redirect(`/properties/${newProperty._id}`)
 }
 
 export default addProperty
-
-// https://nextjs.org/docs/app/building-your-application/data-fetching/server-actions-and-mutations
+// // https://nextjs.org/docs/app/building-your-application/data-fetching/server-actions-and-mutations

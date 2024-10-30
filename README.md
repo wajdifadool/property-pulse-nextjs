@@ -15,6 +15,7 @@ npm run dev
 - Properties
   - Adding property to MongoDB
   - Custom Error Page
+  - image upload to Cloudinary
 
 Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
 
