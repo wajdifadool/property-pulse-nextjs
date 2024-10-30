@@ -14,6 +14,7 @@ npm run dev
   - Authentication with NextAuth: Provideres (google)
 - Properties
   - Adding property to MongoDB
+  - Custom Error Page
 
 Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
 
