@@ -80,6 +80,13 @@ const PropertySchema = new Schema(
       type: Boolean,
       default: false,
     },
+    // User now will be associated with the bootcamp
+    // TODO:
+    // user: {
+    //   type: mongoose.Schema.ObjectId,
+    //   ref: 'User',
+    //   required: true,
+    // },
   },
   {
     timestamps: true,

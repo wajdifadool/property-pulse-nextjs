@@ -10,7 +10,10 @@ npm run dev
 
 ### whats in the box :
 
-- Authentication with NextAuth: Provideres (google)
+- Authentication
+  - Authentication with NextAuth: Provideres (google)
+- Properties
+  - Adding property to MongoDB
 
 Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
 
