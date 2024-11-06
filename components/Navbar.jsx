@@ -101,7 +101,7 @@ const NavBar = () => {
               <Link
                 className="flex flex-shrink-0 items-center"
                 //
-                href="/404">
+                href="/">
                 <Image className="h-10 w-auto" src={logo} alt="PropertyPulse" />
 
                 <span className="hidden md:block text-white text-2xl font-bold ml-2">
@@ -227,6 +227,7 @@ const NavBar = () => {
                       tabIndex="-1"
                       ref={menuRef}>
                       <Link
+                        onClick={() => setIsProfileMenuOpen(false)}
                         href="/profile"
                         className="block px-4 py-2 text-sm text-gray-700"
                         role="menuitem"
@@ -235,6 +236,7 @@ const NavBar = () => {
                         Your Profile
                       </Link>
                       <Link
+                        onClick={() => setIsProfileMenuOpen(false)}
                         href="/properties/saved"
                         className="block px-4 py-2 text-sm text-gray-700"
                         role="menuitem"
@@ -267,6 +269,7 @@ const NavBar = () => {
           <div className="" id="mobile-menu">
             <div className="space-y-1 px-2 pb-3 pt-2">
               <Link
+                onClick={() => setIsMobileMenuOpen(false)}
                 href="/"
                 className={`${
                   pathName === '/' ? 'bg-black' : ''
@@ -274,6 +277,7 @@ const NavBar = () => {
                 Home
               </Link>
               <Link
+                onClick={() => setIsMobileMenuOpen(false)}
                 href="/properties"
                 className={`${
                   pathName === '/properties' ? 'bg-black' : ''
@@ -291,12 +295,34 @@ const NavBar = () => {
                 </Link>
               )}
 
+              {/* for LogdOut Users */}
               {!session && (
-                <button className="flex items-center text-white bg-gray-700 hover:bg-gray-900 hover:text-white rounded-md px-3 py-2 my-5">
+                <div className="hidden md:block md:ml-6">
+                  <div className="flex items-center">
+                    {providers &&
+                      Object.values(providers).map((provider, index) => (
+                        <button
+                          // key={index}
+                          key={provider.id} // google , email , github ...                       onClick={()=>{signIn()}}
+                          onClick={() => signIn(provider.id)}
+                          className="flex items-center text-white bg-gray-700 hover:bg-gray-900 hover:text-white rounded-md px-3 py-2">
+                          <FaGoogle className="fa-brands fa-google text-white mr-2" />
+                          <span>Login or Register</span>
+                        </button>
+                      ))}
+                  </div>
+                </div>
+              )}
+
+              {/* {!session && (
+                
+                <button 
+                
+                className="flex items-center text-white bg-gray-700 hover:bg-gray-900 hover:text-white rounded-md px-3 py-2 my-5">
                   <i className="fa-brands fa-google mr-2"></i>
                   <span>Login or Register</span>
                 </button>
-              )}
+              )} */}
             </div>
           </div>
         )}

@@ -15,11 +15,12 @@ import { FaArrowLeft } from 'react-icons/fa'
 import PropertyDetails from '@/components/PropertyDetails'
 import PropertyHeadImage from '@/components/PropertyHeaderImage'
 import PropertyImages from '@/components/PropertyImages'
+import { convertToSerializeableObject } from '@/utils/convertToObject'
 const PropertPage = async ({ params, searchParams }) => {
-  // C
   await connectDB()
 
-  const property = await Property.findById(params.id).lean()
+  const propertyDoc = await Property.findById(params.id).lean()
+  const property = convertToSerializeableObject(propertyDoc)
 
   return (
     <div>
