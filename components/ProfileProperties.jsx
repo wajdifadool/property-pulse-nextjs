@@ -1,5 +1,5 @@
 'use client'
-
+//` `
 import { useState } from 'react'
 import Image from 'next/image'
 // import Property from '@/models/Property'
@@ -80,7 +80,7 @@ const ProfileProprties = ({ properties: initialProprties }) => {
           </div>
           <div className="mt-2">
             <a
-              href="/add-property.html"
+              href={`/properties/${pro._id}/edit`}
               className="bg-blue-500 text-white px-3 py-3 rounded-md mr-2 hover:bg-blue-600">
               Edit
             </a>
