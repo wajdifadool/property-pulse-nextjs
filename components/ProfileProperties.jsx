@@ -7,6 +7,8 @@ import Image from 'next/image'
 // Actions
 import deleteProperty from '@/app/actions/deleteProperty'
 
+// Ui
+import { toast } from 'react-toastify'
 const ProfileProprties = ({ properties: initialProprties }) => {
   const [properties, setProperties] = useState(initialProprties)
 
@@ -19,6 +21,8 @@ const ProfileProprties = ({ properties: initialProprties }) => {
     )
 
     setProperties(updatedProperties)
+
+    toast.success('deleted successfully')
   }
 
   /**

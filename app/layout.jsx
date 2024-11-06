@@ -9,6 +9,13 @@ import AuthProvider from '@/components/AuthProvider'
 //   keyword: 'rental, property, real estate, keywordsgoes here ',
 //   description: 'find the perfect rental for you  ',
 // }
+
+// For Toastify
+// https://www.npmjs.com/package/react-toastify
+
+import { ToastContainer, toast } from 'react-toastify'
+import 'react-toastify/dist/ReactToastify.css'
+
 // Main Entry Point
 const MainLayout = ({ children }) => {
   return (
@@ -18,6 +25,7 @@ const MainLayout = ({ children }) => {
           <NavBar />
           <main>{children}</main>
           <Footer />
+          <ToastContainer />
         </body>
       </html>
     </AuthProvider>
